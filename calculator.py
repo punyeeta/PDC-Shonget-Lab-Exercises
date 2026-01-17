@@ -6,10 +6,14 @@ def add(a, b):
 def subtract(a, b):
     return a - b
 
+def multiply(a, b):
+    return a*b
+
 while True:
     print("\nChoose an operation.")
     print("1 - Add")
     print("2 - Subtract")
+    print("3 - Multiply")
 
     choice = input("Enter choice: ")
 
@@ -20,6 +24,8 @@ while True:
         print("Result:", add(a, b))
     elif choice == "2":
         print("Result:", subtract(a, b))
+    elif choice == "3":
+        print("Result: ", multiply(a, b))
     else:
         print("Invalid choice")
 
