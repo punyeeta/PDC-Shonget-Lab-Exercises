@@ -130,7 +130,4 @@ if __name__ == "__main__":
     print("="*60)
     
     print("\n✅ All tests completed successfully!")
-    print("\nNow you can run:")
-    print("  - python multithreading_gwa.py (for interactive MT version)")
-    print("  - python multiprocessing_gwa.py (for interactive MP version)")
-    print("  - python comparison.py (for full performance analysis)")
+
