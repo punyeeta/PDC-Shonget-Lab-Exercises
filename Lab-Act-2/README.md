@@ -50,9 +50,7 @@ python comparison.py
 **Multiprocessing** demonstrates true parallelism in Python.
 
 **Explanation:**
-- **Multiprocessing** uses separate Python processes, each with its own Python interpreter and memory space. This allows multiple CPU cores to execute Python bytecode simultaneously, achieving true parallel execution.
-- **Multithreading** in Python is limited by the Global Interpreter Lock (GIL), which prevents multiple threads from executing Python bytecode simultaneously. Only one thread can hold the GIL at a time, making it concurrent but not truly parallel for CPU-bound tasks.
-- True parallelism means multiple tasks execute at the exact same moment on different CPU cores. Multiprocessing achieves this; multithreading does not (for CPU-bound Python code).
+**Multiprocessing** runs tasks in separate processes, each with its own Python interpreter and memory space. Because these processes are independent, they can execute on multiple CPU cores at the same time, allowing true parallel execution. In contrast, **multithreading** in Python is restricted by the Global Interpreter Lock (GIL) which allows only one thread to execute Python bytecode at a time. As a result, multithreading provides concurrency but not true parallelism for CPU-bound tasks, whereas multiprocessing enables tasks to run simultaneously across different CPU cores.
 
 ### 2. Compare execution times between multithreading and multiprocessing.
 
@@ -77,19 +75,12 @@ Based on our testing:
 
 **No, Python cannot handle true parallelism using threads for CPU-bound tasks.**
 
-**Reason: Global Interpreter Lock (GIL)**
+**Explanation**
+This is mainly because of the **Global Interpreter Lock (GIL)**. The GIL is a mechanism that allows only one thread to execute Python bytecode at a time, even on systems with multiple CPU cores. It exists to simplify memory management, since Python uses reference counting, which is not thread-safe, and to ensure compatibility with many C extensions that were not designed for multi-threaded execution.
 
-The GIL is a mutex that protects access to Python objects, preventing multiple threads from executing Python bytecode simultaneously. Here's why it exists:
+However, Python threads can still be useful in certain cases. For **I/O-bound tasks** such as file reading, database access, or network requests, the GIL is released while waiting for I/O, allowing other threads to run. This means threads provide **concurrency**, but not true **parallelism**, for CPU-intensive programs. Some libraries like NumPy can achieve parallelism because they release the GIL during heavy computations.
 
-1. **Memory Management**: Python uses reference counting for memory management, which isn't thread-safe. The GIL simplifies this.
-2. **C Extension Safety**: Many C extensions aren't thread-safe, so the GIL protects them.
-
-**However:**
-- Threads CAN achieve parallelism for **I/O-bound tasks** (file operations, network requests) because the GIL is released during I/O operations.
-- Threads provide **concurrency** (task switching) but not **parallelism** (simultaneous execution) for CPU-bound Python code.
-- Some operations that release the GIL (like NumPy computations) can achieve parallelism with threads.
-
-**Summary:** For pure Python CPU-bound code, threads run concurrently (one at a time, switching quickly) rather than in parallel (simultaneously).
+In summary, Python threads run one at a time for CPU-bound code, switching quickly between tasks, rather than running simultaneously in parallel.
 
 ### 4. What happens if you input a large number of grades (e.g., 1000)? Which method is faster and why?
 
@@ -111,54 +102,18 @@ The GIL is a mutex that protects access to Python objects, preventing multiple t
   - Inter-process communication via Queue
   - Process cleanup
 
-**Why Multithreading Wins Here:**
-1. **Task Nature**: Our GWA calculation is trivial (one division), making it I/O-bound (printing results)
-2. **Low Computation**: Not enough CPU work to benefit from true parallelism
-3. **Memory Sharing**: Threads share memory, avoiding data copying
-4. **Creation Overhead**: Creating 1000 threads is much faster than 1000 processes
+**Explanation**
+Multithreading performs better in this case mainly because the task itself is very light. The GWA computation only involves a simple division, and most of the time is spent on I/O operations such as printing results. Since threads share the same memory space, there is little overhead from data sharing, and context switching between threads is relatively fast. Although Python’s GIL limits true parallel execution, it does not significantly affect performance here because the task is not CPU-intensive.
 
-**When Would Multiprocessing Win?**
-If each grade calculation involved heavy CPU work (e.g., complex statistical analysis, encryption, image processing), multiprocessing would eventually become faster as the computation time would outweigh the process creation overhead.
+While, multiprocessing would be more efficient if each grade computation required heavy CPU processing, such as complex mathematical operations or data analysis. In such cases, the longer computation time would compensate for the overhead of creating separate processes and managing inter-process communication, allowing multiprocessing to take advantage of multiple CPU cores.
 
 ### 5. Which method is better for CPU-bound tasks and which for I/O-bound tasks?
 
-**CPU-Bound Tasks → Multiprocessing**
+**CPU-bound tasks** are better handled using multiprocessing because they spend most of their time performing computations such as mathematical operations, data processing, or model training. Multiprocessing allows the program to fully use multiple CPU cores and avoids the limitations of the GIL, resulting in faster execution for computation-heavy workloads.
 
-CPU-bound tasks spend most time doing computations:
-- Mathematical calculations
-- Data processing and transformations
-- Image/video processing
-- Encryption/compression
-- Machine learning training
+On the other hand, **I/O-bound tasks** are more suitable for multithreading since they mostly involve waiting for operations like file access, network requests, or user input. Multithreading works efficiently in these cases because threads can run while others are waiting, and the GIL is released during I/O operations, improving overall responsiveness.
 
-**Why Multiprocessing:**
-- Bypasses the GIL by using separate Python interpreters
-- Utilizes multiple CPU cores simultaneously
-- Achieves true parallel execution
-- Linear speedup possible (2 cores ≈ 2x faster)
-
-**I/O-Bound Tasks → Multithreading**
-
-I/O-bound tasks spend most time waiting for external resources:
-- File reading/writing
-- Network requests (API calls, web scraping)
-- Database queries
-- User input
-
-**Why Multithreading:**
-- Much lower overhead than processes
-- Threads share memory space (efficient)
-- GIL is released during I/O operations
-- Can handle thousands of concurrent connections
-- Perfect for concurrent I/O operations
-
-**Our GWA Calculator:**
-Our task is **I/O-bound** (printing output), so multithreading is more appropriate and faster.
-
-**Quick Decision Guide:**
-- Waiting for things (network, disk, user) → **Multithreading**
-- Computing things (math, processing) → **Multiprocessing**
-- Both? → **AsyncIO** or hybrid approach
+In the case of our GWA Calculator, the task is primarily I/O-bound due to input and output operations, making multithreading the more appropriate and efficient choice.
 
 ### 6. How did your group apply creative coding or algorithmic solutions in this lab?
 
@@ -201,40 +156,6 @@ Our task is **I/O-bound** (printing output), so multithreading is more appropria
    - Batch result collection
    - Efficient data structures (lists, queues)
 
-## Key Learnings
+## Key Learnings / Takeaway
 
-1. **Concurrency vs Parallelism**: Understanding the critical difference and when to use each
-2. **GIL Impact**: How Python's GIL affects multithreading performance
-3. **Task Classification**: Identifying CPU-bound vs I/O-bound tasks
-4. **Overhead Costs**: Process creation overhead vs thread creation
-5. **Synchronization**: Proper use of locks, queues for thread/process safety
-
-## Observations
-
-### Execution Order
-Both methods produce **non-deterministic execution order**:
-- Threads/processes may complete in any order
-- Order depends on OS scheduling, system load, and timing
-- Results appear as they finish, not in input order
-- This demonstrates true concurrent execution
-
-### GIL Impact Demonstration
-When running with many subjects:
-- Multithreading: One thread runs at a time (GIL switching)
-- Multiprocessing: Multiple processes run simultaneously on different cores
-
-## Conclusion
-
-This lab successfully demonstrated:
-- ✅ Implementing concurrent execution with threads and processes
-- ✅ Understanding Python's GIL and its implications
-- ✅ Comparing performance characteristics
-- ✅ Choosing appropriate concurrency models for different tasks
-- ✅ Creative problem-solving in concurrent programming
-
-**Final Recommendation for GWA Calculator:**
-Use **multithreading** because:
-1. Task is I/O-bound (printing output)
-2. Minimal CPU computation
-3. Lower overhead and faster execution
-4. Simpler implementation for this use case
+Through this activity, we gained a clearer understanding of how concurrency works in practice and how it differs from parallelism. We observed that although both multithreading and multiprocessing allow tasks to run concurrently, their behavior and performance vary depending on the nature of the task. In particular, Python’s Global Interpreter Lock (GIL) limits true parallel execution in multithreading for CPU-bound tasks, while multiprocessing allows processes to run simultaneously across multiple cores. We also learned that execution order is not guaranteed in concurrent programs, as task completion depends on system scheduling and timing rather than input sequence. Overall, this exercise emphasized the importance of identifying whether a task is CPU-bound or I/O-bound before choosing an appropriate concurrency approach. Based on our observations, multithreading was more suitable for the GWA calculator since the task involved minimal computation and was primarily I/O-bound, making it simpler and more efficient for this use case.
