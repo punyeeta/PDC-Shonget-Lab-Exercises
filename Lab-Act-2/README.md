@@ -41,10 +41,10 @@ python comparison.py
 
 | Method            | Execution Order | GWA Output | Execution Time |
 |-------------------|----------------|------------|----------------|
-| Multithreading    | Non-deterministic (varies each run) | 86.25 | 0.012345s |
-| Multiprocessing   | Non-deterministic (varies each run) | 86.25 | 0.045678s |
+| Multithreading    | Non-deterministic (varies each run) | 90.00 | 0.012921s |
+| Multiprocessing   | Non-deterministic (varies each run) | 90.00 | 0.223115s |
 
-**Note:** Execution times will vary based on system specifications and number of subjects.
+**Note:** Results from running quicktest.py, with sample data as: [90, 85. 92, 88, 95]
 
 ## Answers to Lab Questions
 
