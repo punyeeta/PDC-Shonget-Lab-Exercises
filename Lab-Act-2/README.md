@@ -1,7 +1,10 @@
 # Grade Computing System - Lab Report
 
 ## Group Members
-[Add your group member names here]
+Chiong, Heart
+Limpahan, Mark
+Locsin, Roxanne
+Sajol, Rhenel
 
 ## Overview
 This project implements a Grade Computing System using both **multithreading** and **multiprocessing** in Python. The system calculates the General Weighted Average (GWA) for multiple subjects, demonstrating concurrent execution patterns and performance differences.
@@ -83,29 +86,10 @@ However, Python threads can still be useful in certain cases. For **I/O-bound ta
 In summary, Python threads run one at a time for CPU-bound code, switching quickly between tasks, rather than running simultaneously in parallel.
 
 ### 4. What happens if you input a large number of grades (e.g., 1000)? Which method is faster and why?
-
-**Testing with 1000 grades:**
-
-**Multithreading:**
-- Faster for this specific task
-- Time: ~0.15-0.25 seconds
-- All threads share memory, minimal overhead
-- Fast context switching
-- Limited by GIL but our task is mostly I/O (printing)
-
-**Multiprocessing:**
-- Slower for this specific task
-- Time: ~0.50-0.80 seconds
-- Each process requires:
-  - Separate memory space
-  - Process creation overhead (~0.1-0.2s per process)
-  - Inter-process communication via Queue
-  - Process cleanup
-
 **Explanation**
-Multithreading performs better in this case mainly because the task itself is very light. The GWA computation only involves a simple division, and most of the time is spent on I/O operations such as printing results. Since threads share the same memory space, there is little overhead from data sharing, and context switching between threads is relatively fast. Although Python’s GIL limits true parallel execution, it does not significantly affect performance here because the task is not CPU-intensive.
+When testing with large numbers of grades, multithreading is significantly faster than multiprocessing. In our experiments with up to 200 subjects, multithreading consistently outperformed multiprocessing. For example, processing 200 grades took 0.041 seconds with multithreading versus 5.766 seconds with multiprocessing, making multithreading over 140 times faster. When we attempted to test with datasets approaching 1000 grades, the terminal would freeze and become unresponsive, particularly with multiprocessing, preventing us from completing those tests.
 
-While, multiprocessing would be more efficient if each grade computation required heavy CPU processing, such as complex mathematical operations or data analysis. In such cases, the longer computation time would compensate for the overhead of creating separate processes and managing inter-process communication, allowing multiprocessing to take advantage of multiple CPU cores.
+Multithreading is faster because it has minimal overhead—all threads share the same memory space and Python interpreter, making creation and communication nearly instantaneous. In contrast, multiprocessing requires creating separate processes, each with its own memory space and interpreter, which consumes significant system resources. On Windows, creating 200+ processes means allocating substantial memory and managing complex inter-process communication through Queues, resulting in major slowdowns. Additionally, our GWA calculation is an I/O-bound task (mostly printing output) with trivial computation, so we don't benefit from multiprocessing's true parallelism but still suffer from its overhead. The freezing at 1000+ grades occurs because spawning that many processes overwhelms system resources—each process consumes 10-50 MB of memory, and managing thousands of processes exhausts RAM and strains the operating system's scheduler.
 
 ### 5. Which method is better for CPU-bound tasks and which for I/O-bound tasks?
 
