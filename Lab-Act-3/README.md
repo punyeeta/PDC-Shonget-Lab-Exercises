@@ -3,8 +3,6 @@
 # Group Members: Chiong, Limpahan, Locsin, Sajol
 
 ## Analysis Questions
-*(To be answered in README.md)*
-Provide concise but well-structured explanations. 
 
 1. Differentiate Task and Data Parallelism. Identify which part of the lab demonstrates each and justify the workload division. 
 
