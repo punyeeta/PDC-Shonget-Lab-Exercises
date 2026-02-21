@@ -31,3 +31,17 @@ def process_applicant(applicant_id):
         time.sleep(0.05)  # simulate database writing delay
     
     return assigned_id
+
+# Sequential Processing
+def sequential_processing(applicants):
+    global id_counter
+    id_counter = 0
+
+    start_time = time.time()
+
+    for applicant in applicants:
+        process_applicant(applicant)
+
+    end_time = time.time()
+
+    return end_time - start_time
