@@ -9,6 +9,7 @@ DATASET_DIR = os.path.join(os.path.dirname(__file__), "datasets")
 DATASETS = ["small_random.pkl", "medium_random.pkl", "large_random.pkl", "small_sorted.pkl", "medium_sorted.pkl", "large_sorted.pkl"]
 
 
+# Local sort used per chunk.
 def quicksort(data):
 	if len(data) <= 1:
 		return data
@@ -22,10 +23,13 @@ def quicksort(data):
 def parallel_quicksort(data):
 	if len(data) <= 1:
 		return data
+	# Instruction: divide data into 4 chunks.
 	chunk_size = max(1, len(data) // 4)
 	chunks = [data[i:i + chunk_size] for i in range(0, len(data), chunk_size)]
+	# Instruction: sort chunks in separate processes.
 	with ProcessPoolExecutor(max_workers=4) as ex:
 		sorted_chunks = list(ex.map(quicksort, chunks))
+	# Instruction: merge chunks into one globally sorted list.
 	return list(heapq.merge(*sorted_chunks))
 
 
@@ -67,6 +71,7 @@ def run_parallel_sort(filename="small_random.pkl"):
 	print(f"Elements: {len(data)}")
 	print(f"First 5: {sorted_data[:5]}")
 	print(f"Last 5:  {sorted_data[-5:]}")
+	# Quick global correctness check.
 	print(f"Sorted Correctly: {all(sorted_data[i] <= sorted_data[i + 1] for i in range(len(sorted_data) - 1))}")
 	return sorted_data
 
