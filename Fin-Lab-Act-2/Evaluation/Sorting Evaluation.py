@@ -13,6 +13,8 @@ DATASETS = [
     "medium_random.pkl",
     "large_random.pkl",
     "small_sorted.pkl",
+    "medium_sorted.pkl",
+    "large_sorted.pkl",
 ]
 
 if PROJECT_ROOT not in sys.path:
@@ -38,6 +40,19 @@ def evaluate_sequential_sort(seq_module):
             print(f"Skipped {dataset}: dataset file not found.\n")
 
 
+
+def evaluate_parallel_sort(par_module):
+    print("\n=== Parallel Quicksort Evaluation ===")
+    for dataset in DATASETS:
+        try:
+            start = time.time()
+            par_module.run_parallel_sort(dataset)
+            runtime = time.time() - start
+            print(f"Summary -> {dataset}: {runtime:.6f} seconds\n")
+        except FileNotFoundError:
+            print(f"Skipped {dataset}: dataset file not found.\n")
+
+
 def evaluate_python_sorted(seq_module):
     print("\n=== Python built-in sorted() Baseline ===")
     for dataset in DATASETS:
@@ -52,18 +67,6 @@ def evaluate_python_sorted(seq_module):
             print(f"Execution Time: {end - start:.6f} seconds")
             seq_module.validate_first_last_five(output)
             print()
-        except FileNotFoundError:
-            print(f"Skipped {dataset}: dataset file not found.\n")
-
-
-def evaluate_parallel_sort(par_module):
-    print("\n=== Parallel Quicksort Evaluation ===")
-    for dataset in DATASETS:
-        try:
-            start = time.time()
-            par_module.run_parallel_sort(dataset)
-            runtime = time.time() - start
-            print(f"Summary -> {dataset}: {runtime:.6f} seconds\n")
         except FileNotFoundError:
             print(f"Skipped {dataset}: dataset file not found.\n")
 
