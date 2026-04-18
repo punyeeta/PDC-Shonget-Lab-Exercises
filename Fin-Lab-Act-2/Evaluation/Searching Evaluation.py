@@ -22,7 +22,7 @@ if __name__ == "__main__":
         with open(f"../datasets/{filename}", "rb") as f:
             data = pickle.load(f)
 
-        target = 437287
+        target = 4665
 
         start = time.time()
         seq_result = linear_search(data, target)
