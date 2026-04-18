@@ -14,12 +14,12 @@ DATASETS = [
 ]
 
 
-# Recursive quicksort for sequential sorting.
+# Gigamitan ug quicksort algorithm para ma sort ang data nga gi load gikan sa dataset file and the best daw iyan kay O(n log n) ang average time complexity
 def quicksort(data):
 	if len(data) <= 1:
 		return data
 
-	# Split values around a pivot, then recursively sort each side.
+	# Gi split ang data into three parts: left (less than pivot), middle (equal to pivot), and right (greater than pivot)
 	pivot = data[len(data) // 2]
 	left = [x for x in data if x < pivot]
 	middle = [x for x in data if x == pivot]
@@ -27,7 +27,7 @@ def quicksort(data):
 	return quicksort(left) + middle + quicksort(right)
 
 
-# Quick output check for report/demo readability.
+# Ipakita ang first 5 ug last 5 elements sa sorted data, ug i-verify kung sorted ba siya
 def validate_first_last_five(sorted_data):
 	first_five = sorted_data[:5]
 	last_five = sorted_data[-5:]
@@ -38,14 +38,14 @@ def validate_first_last_five(sorted_data):
 	print(f"Sorted Correctly: {is_sorted}")
 
 
-# Load one dataset list from the local datasets folder.
+# E-load ang dataset gamit ang pickle module para ma read ang binary file nga gi save sa dataset_generator.py
 def load_dataset(filename):
 	path = os.path.join(DATASET_DIR, filename)
 	with open(path, "rb") as file:
 		return pickle.load(file)
 
 
-# Run sequential quicksort on one selected dataset.
+# E-run ang quicksort algorithm sa usa ka selected dataset
 def run_sequential_sort(filename="small_random.pkl"):
 	data = load_dataset(filename)
 	sorted_data = quicksort(data)
@@ -57,7 +57,7 @@ def run_sequential_sort(filename="small_random.pkl"):
 	return sorted_data
 
 
-# Interactive picker when no command-line argument is provided.
+# Nag put mi ug interactive dataset picker
 def choose_dataset():
 	print("Choose a dataset:")
 	for i, name in enumerate(DATASETS, start=1):
@@ -72,12 +72,11 @@ def choose_dataset():
 	return "small_random.pkl"
 
 
-# Parse CLI input so the script can run in automatic test mode.
 def parse_dataset_argument(args):
 	if not args:
 		return None
 
-	# Accept either dataset index (1-6) or exact filename.
+	# E-accept either ang dataset name or ang corresponding number sa dataset list
 	arg = args[0].strip()
 	if arg.isdigit():
 		index = int(arg) - 1
@@ -89,7 +88,6 @@ def parse_dataset_argument(args):
 
 
 if __name__ == "__main__":
-	# Prefer CLI dataset selection; otherwise ask interactively.
 	selected_dataset = parse_dataset_argument(sys.argv[1:])
 	if selected_dataset is None:
 		selected_dataset = choose_dataset()

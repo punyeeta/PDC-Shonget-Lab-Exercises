@@ -4,7 +4,7 @@ import time
 
 
 BASE_DIR = os.path.dirname(__file__)
-SEQUENTIAL_FILE = os.path.join(BASE_DIR, "Sequential Sorting Algorithm.py")
+SEQUENTIAL_FILE = os.path.join(BASE_DIR, "Sequential_Sorting_Algorithm.py")
 DATASETS = [
     "small_random.pkl",
     "medium_random.pkl",

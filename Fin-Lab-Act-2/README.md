@@ -10,31 +10,46 @@
 ---
 
 ### Chiong, Heart
-
-
+1. 
+2. 
+3. 
+4. 
+5. 
 
 ---
 
 ### Limpahan, Mark Vincent
-
-
+1. 
+2. 
+3. 
+4. 
+5. 
 
 ---
 
 ### Locsin, Roxanne
-
-
+1. 
+2. 
+3. 
+4. 
+5. 
 
 ---
 
 ### Sajol, Rhenel Jhon
-
-
+1. 
+2. 
+3. 
+4. 
+5. 
 
 ---
 
 ### Mag-isa, Jules
-
-
+1. 
+2. 
+3. 
+4. 
+5. 
 
 ---
