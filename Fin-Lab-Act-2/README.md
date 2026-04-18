@@ -32,11 +32,11 @@
 ---
 
 ### Locsin, Roxanne
-1. 
-2. 
-3. 
-4. 
-5. 
+1. We used Quick Sort because of its efficient O(n log n) performance and its ability to divide tasks, making it suitable for parallelism. From the results, sequential Quick Sort was faster on small and medium datasets due to lower overhead, while parallel Quick Sort performed better on large datasets where the workload justified the extra cost. For searching, sequential linear search consistently outperformed parallel search since the overhead of creating processes was higher than the actual work, especially when the target was found early.
+2. As dataset size increased, both sequential and parallel sorting took longer, but sequential Quick Sort remained faster for small and medium datasets, while parallel Quick Sort became slightly better for large datasets. In searching, sequential linear search was always faster across all dataset sizes, showing that increasing input size alone does not guarantee better performance with parallelism, especially for simple operations.
+3. The main challenge for me was making the sequential Quick Sort flexible for testing while keeping the code simple, including handling inputs and ensuring safe defaults. I also needed to verify correctness clearly by adding checks like partial outputs and full sorting validation. Managing dataset paths was another issue, as incorrect paths could cause errors during testing.
+4. A key insight for this is that performance is not just about the algorithm but also the overhead. In multiprocessing, process creation and synchronization like queues and merging add extra cost. For small tasks, this overhead dominates, for example, parallel search took much longer than sequential. In sorting, parallel only became faster for large datasets where the workload offset the overhead. Overall, efficiency depends on minimizing overhead, not just using parallelism.
+5. Parallelism was beneficial for large, computation-heavy tasks like sorting, where it improved performance. However, it was unnecessary for small datasets and simple tasks like linear search, especially when early termination is possible. Overall, sequential methods are better for lightweight tasks, while parallelism is more effective for large workloads with independent computations.
 
 ---
 
