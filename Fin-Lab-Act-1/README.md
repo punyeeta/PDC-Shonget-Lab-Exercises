@@ -13,12 +13,12 @@ Provide written answers to the following questions:
 ---
 
 ### Chiong, Heart
-1. 
-2. 
-3. 
-4. 
-5. 
-6. 
+1. Round-robin method was the method we used to distribute the orders through the workers, where tasks are assigned one by one to each worker in order, then repeated.
+2. If there are more orders than workers, some workers just handle multiple orders. All workers still run at the same time, so processing continues efficiently and balanced.
+3. The delays made the finishing order random. Even if tasks were given in sequence, they didn’t finish in the same order because of different processing times.
+4. We used a Manager to create a shared list that all processes can access. It was set up in the main process before the workers started.
+5. When workers wrote at the same time, it caused conflicts in the shared data. Some outputs got messy or out of order.
+6. To fix that, we added a lock so only one worker can write at a time, which kept the results correct and consistent.
 
 ---
 
