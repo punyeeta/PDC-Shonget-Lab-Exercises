@@ -1,0 +1,63 @@
+# Shonget PDC Answers
+
+## Reflection Questions
+
+Provide written answers to the following questions: 
+1. How did you distribute orders among worker processes? 
+2. What happens if there are more orders than workers? 
+3. How did processing delays affect the order completion? 
+4. How did you implement shared memory, and where was it initialized? 
+5. What issues occurred when multiple workers wrote to shared memory simultaneously? 
+6. How did you ensure consistent results when using multiple processes? 
+
+---
+
+### Chiong, Heart
+1. 
+2. 
+3. 
+4. 
+5. 
+6. 
+
+---
+
+### Limpahan, Mark Vincent
+1. 
+2. 
+3. 
+4. 
+5. 
+6. 
+
+---
+
+### Locsin, Roxanne
+1. We used a round-robin approach to distribute the orders evenly across workers. Each order is assigned one by one, and once all workers receive an order, the assignment cycles back to the first worker. This ensures that the workload is balanced and no single worker is overloaded.
+2. If there are more orders than workers, some workers simply receive more tasks, but the distribution remains balanced overall. Each worker processes its assigned orders sequentially, while all workers run concurrently. The system still works efficiently since no worker blocks others, and the master waits for all results before finishing.
+3. Processing delays made the completion order non-deterministic. Since all workers run in parallel and each task includes a delay, the order in which tasks finish depends on timing rather than assignment. As a result, the output order can vary in each run even though the processing itself is correct.
+4. We implemented shared memory using a Manager, which maintains a shared list accessible by all processes. This shared structure is initialized by the master process and managed in a separate process. Workers connect to it and update the shared list, allowing all results to be stored in a centralized location.
+5. When multiple workers wrote to shared memory at the same time, race conditions occurred. This led to inconsistent outputs such as unordered or missing entries because there was no control over simultaneous access. As a result, the output became unpredictable across different runs.
+6. We ensured consistency by using a lock to control access to the shared memory. Only one worker can write at a time, preventing conflicts and ensuring correct results. This made the final output stable, complete, and consistent in every execution.
+
+---
+
+### Sajol, Rhenel Jhon
+1. 
+2. 
+3. 
+4. 
+5. 
+6. 
+
+---
+
+### Mag-isa, Jules
+1. 
+2. 
+3. 
+4. 
+5. 
+6. 
+
+---

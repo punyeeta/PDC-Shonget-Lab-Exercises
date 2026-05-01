@@ -1,6 +1,6 @@
-# Distributed Order Processing Demo — Exact Outputs and Simple Explanation
+# Distributed Order Processing Demo
 
-## Unsynchronized run (exact output)
+## Unsynchronized run 
 
 ```text
 [WORKER 2] Assigned orders: [2, 5] [NO LOCK]
@@ -30,7 +30,7 @@
 	Order 5 (Headphones) handled by worker 2
 ```
 
-## Synchronized run (exact output)
+## Synchronized run 
 
 ```text
 [WORKER 3] Assigned orders: [3, 6] [LOCKED]
@@ -60,13 +60,13 @@
 	Order 6 (USB Cable) handled by worker 3
 ```
 
-## Simple explanation (plain words)
+## Explanation 
 
-- Unsynchronized run (what happened):
+- Unsynchronized run:
 	- Workers wrote to the shared list at the same time without asking permission.
 	- Because writes can overlap, the final order of completed records is not predictable.
 
-- Synchronized run (what happened):
+- Synchronized run:
 	- Workers used a lock so only one could write at a time.
 	- This made the final recorded order stable and repeatable across runs.
 
