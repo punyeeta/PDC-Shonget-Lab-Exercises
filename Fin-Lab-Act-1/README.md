@@ -43,12 +43,12 @@ Provide written answers to the following questions:
 ---
 
 ### Sajol, Rhenel Jhon
-1. 
-2. 
-3. 
-4. 
-5. 
-6. 
+1. We gave the orders to the workers one by one using round-robin, so the work was shared fairly and no worker got all the tasks at once. This is done in [main_activity.py](Fin-Lab-Act-1/main_activity.py) in the `assign_orders` function, where the orders are placed by index into each worker group.
+2. If there were more orders than workers, some workers got more than one order, but all workers still kept working. The master still sends the jobs to each worker in [main_activity.py](Fin-Lab-Act-1/main_activity.py), so every order gets assigned even when the list is longer than the number of workers.
+3. The delays changed the finish order, so some tasks finished faster than others even if they were assigned earlier. In [main_activity.py](Fin-Lab-Act-1/main_activity.py), each worker uses `time.sleep(1)` before writing the result, which makes the timing of each process matter.
+4. We used shared memory with a Manager, and it was created in the main process before the workers started. You can see this in [main_activity.py](Fin-Lab-Act-1/main_activity.py) where `OrderManager` is started, `get_shared_orders` is registered, and the workers connect to the same manager address.
+5. When many workers wrote at the same time, the data could mix up or become wrong. This problem is shown in [main_activity.py](Fin-Lab-Act-1/main_activity.py) when workers write with `shared_orders.append(rec)` without a lock, because the updates are not fully protected.
+6. We used a lock so only one worker could write at a time, which kept the results correct and more stable. The safe write happens in [main_activity.py](Fin-Lab-Act-1/main_activity.py) through `append_record` and `use_lock`, so the shared list is updated in a controlled way.
 
 ---
 
