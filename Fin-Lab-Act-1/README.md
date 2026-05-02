@@ -23,12 +23,12 @@ Provide written answers to the following questions:
 ---
 
 ### Limpahan, Mark Vincent
-1. 
-2. 
-3. 
-4. 
-5. 
-6. 
+1. We distributed the orders using a round-robin method, where each order is assigned one by one to each worker in sequence. Once all workers have been assigned an order, the cycle repeats. This keeps the workload balanced across all workers.
+2. If there are more orders than workers, some workers simply take on more than one order. All workers still run at the same time, so the extra load is handled efficiently without blocking other workers. The master process waits until all results are returned before finishing.
+3. The processing delays caused the completion order to become unpredictable. Since each worker runs in parallel and has its own delay, tasks don't necessarily finish in the order they were assigned. The timing of each process determines which finishes first.
+4. We used a Manager to set up a shared list that all worker processes can access. The shared memory was initialized by the main process before any workers were started, so all workers connect to the same centralized structure.
+5. When multiple workers wrote to shared memory at the same time, race conditions occurred. Without any access control, the shared data could become inconsistent, with entries appearing out of order or getting overwritten.
+6. We resolved this by using a lock that allows only one worker to write to the shared memory at a time. This prevents conflicts and ensures that the final output is complete, correct, and consistent across every run.
 
 ---
 
