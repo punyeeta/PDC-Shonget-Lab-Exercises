@@ -53,11 +53,11 @@ Provide written answers to the following questions:
 ---
 
 ### Mag-isa, Jules
-1. 
-2. 
-3. 
-4. 
-5. 
-6. 
+1. Here, we used the round-robin approach, where each task for the workers happens one at a time, then repeated until all of them got their tasks completed.  
+2. Though some orders are more than workers, there are some of those that run sequentially, and the rest are run concturrently. But good news is that the distribution still remains balanced. That's because no other blocks the others, and the master waits for them to finish.
+3. The order completion (thanks to processing delays) will result in random orders for the workers. Which means that they did not get the desired order due to different processing times, even if they're given a sequence of orders.
+4. We used Manager for implementing the shared memory for all processes to have the same list. This is initialized by the master process and it is managed by a seprate class. Thanks to a entralized location, workers can access connection and updates with the shared list, where all results can be stored there.
+5. For the issues with simultaneous writing to shared memory from workers, we have race conditions; due to the fact that some of them have no orders, while others have missing ones, making the results inconsistent and messy to look at.
+6. To make a remedy for inconsistent results in using multiple processes, we used a lock to control access to the shared memory. This allows a worker to access one at a time, making the results consistent, clean, and organized.
 
 ---
